@@ -16,6 +16,8 @@ pub struct AppConfig {
     pub url: Option<String>,
     pub username: Option<String>,
     pub password: Option<String>,
+    pub ns: Option<String>,
+    pub tb: Option<String>,
     pub verbose: bool,
 }
 
@@ -38,6 +40,8 @@ impl Default for AppConfig {
             url: None,
             username: None,
             password: None,
+            ns: None,
+            tb: None,
             verbose: false,
         }
     }
@@ -65,11 +69,19 @@ impl AppConfig {
         if self.password.is_none() {
             return Err("password is not set".into());
         }
+        if self.ns.is_none() {
+            return Err("ns is not set".into());
+        }
+        if self.tb.is_none() {
+            return Err("tb is not set".into());
+        }
 
         Ok(AppConfig {
             url: self.url,
             username: self.username,
             password: self.password,
+            ns: self.ns,
+            tb: self.tb,
             verbose: self.verbose,
         })
     }
@@ -101,6 +113,8 @@ impl From<HashMap<String, String>> for AppConfig {
                 "username" => config.username = Some(value),
                 "password" => config.password = Some(value),
                 "verbose" => config.verbose = value.parse::<bool>().unwrap(),
+                "ns" => config.ns = Some(value),
+                "tb" => config.tb = Some(value),
                 _ => {}
             }
         }

@@ -9,14 +9,20 @@ use surrealdb_test::models::connection::establish_connection;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let settings = AppConfig::get().build().await?;
-    let db = establish_connection(settings.url, settings.username, settings.password);
-
     println!("Hello, world!");
 
-    let db = measure_time!(
-        "Creating connection to database with WebSocket" 
-        => Surreal::new::<Ws>("localhost:8000").await?);
+    let settings =
+        measure_time!("building AppConfig from settings.toml" => AppConfig::get().build().await?);
+    let db = measure_time!("connecting to database" =>
+        establish_connection(
+            settings.url,
+            settings.username,
+            settings.password,
+            settings.ns,
+            settings.tb,
+        )
+        .await?
+    );
 
     db.signin(Root {
         username: "root",
