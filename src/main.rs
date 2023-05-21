@@ -9,16 +9,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Hello, world!");
 
     macro_rules! measure_time_inline {
-        ($stmt:expr) => {{
+        ($comment:expr => $stmt:expr) => {{
             let start = std::time::Instant::now();
             let result = $stmt;
             let duration = start.elapsed();
-            println!("Execution time: {:?}", duration);
+            println!("Execution time for {}: {:?}", $comment, duration);
             result
         }};
     }
 
-    let db = measure_time_inline!(Surreal::new::<Ws>("localhost:8000").await?);
+    let db = measure_time_inline!( 
+        "Creating connection to database with WebSocket" 
+        => Surreal::new::<Ws>("localhost:8000").await?);
 
     db.signin(Root {
         username: "root",
@@ -53,17 +55,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     macro_rules! measure_time {
-        ($stmt:stmt) => {{
+        ($comment:expr => $stmt:expr) => {{
             let start = std::time::Instant::now();
             {
                 $stmt
             }
             let duration = start.elapsed();
-            println!("Execution time: {:?}", duration);
+            println!("Execution time for {}: {:?}", $comment, duration);
         }};
     }
 
-    measure_time!({
+    measure_time!("creating person record" => {
         let created: Record = db
             .create("person")
             .content(Person {
@@ -78,7 +80,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         dbg!(&created);
     });
 
-    measure_time!({
+    measure_time!("updating person record" => {
         let updated: Record = db
             .update(("person", "jaime"))
             .merge(Responsibility { marketing: true })
@@ -86,12 +88,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         dbg!(&updated);
     });
 
-    measure_time!({
+    measure_time!("selection all people" => {
         let people: Vec<Record> = db.select("person").await?;
         dbg!(people);
     });
 
-    measure_time!({
+    measure_time!("complex select" => {
         let groups = db
             .query("SELECT marketing, count() FROM type::table($table) GROUP BY marketing")
             .bind(("table", "person"))
