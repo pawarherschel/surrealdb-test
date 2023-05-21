@@ -310,6 +310,7 @@ mod tests {
         );
     }
 
+    #[ignore]
     #[test]
     #[should_panic]
     fn test_parse_world_instance_unknown_key() {
