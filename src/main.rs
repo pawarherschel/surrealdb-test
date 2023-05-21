@@ -3,22 +3,18 @@ use surrealdb::engine::remote::ws::Ws;
 use surrealdb::opt::auth::Root;
 use surrealdb::sql::Thing;
 use surrealdb::Surreal;
+use surrealdb_test::measure_time;
+use surrealdb_test::models::app_config::AppConfig;
+use surrealdb_test::models::connection::establish_connection;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let settings = AppConfig::get().build().await?;
+    let db = establish_connection(settings.url, settings.username, settings.password);
+
     println!("Hello, world!");
 
-    macro_rules! measure_time_inline {
-        ($comment:expr => $stmt:expr) => {{
-            let start = std::time::Instant::now();
-            let result = $stmt;
-            let duration = start.elapsed();
-            println!("Execution time for {}: {:?}", $comment, duration);
-            result
-        }};
-    }
-
-    let db = measure_time_inline!( 
+    let db = measure_time!(
         "Creating connection to database with WebSocket" 
         => Surreal::new::<Ws>("localhost:8000").await?);
 
@@ -53,18 +49,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         #[allow(dead_code)]
         id: Thing,
     }
-
-    macro_rules! measure_time {
-        ($comment:expr => $stmt:expr) => {{
-            let start = std::time::Instant::now();
-            {
-                $stmt
-            }
-            let duration = start.elapsed();
-            println!("Execution time for {}: {:?}", $comment, duration);
-        }};
-    }
-
     measure_time!("creating person record" => {
         let created: Record = db
             .create("person")
