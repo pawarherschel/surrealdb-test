@@ -1,12 +1,9 @@
 use itertools::Itertools;
 use serde::{Deserialize, Serialize};
-
-
 use surrealdb::engine::remote::ws::Ws;
 use surrealdb::opt::auth::Root;
 use surrealdb::sql::Thing;
 use surrealdb::Surreal;
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
