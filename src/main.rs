@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use serde::{Deserialize, Serialize};
 use surrealdb::engine::remote::ws::Ws;
 use surrealdb::opt::auth::Root;
@@ -56,7 +55,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     macro_rules! measure_time {
         ($stmt:stmt) => {{
             let start = std::time::Instant::now();
-            $stmt;
+            {
+                $stmt
+            }
             let duration = start.elapsed();
             println!("Execution time: {:?}", duration);
         }};
