@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
-use surrealdb::engine::remote::ws::Ws;
 use surrealdb::opt::auth::Root;
 use surrealdb::sql::Thing;
-use surrealdb::Surreal;
 use surrealdb_test::measure_time;
 use surrealdb_test::models::app_config::AppConfig;
 use surrealdb_test::models::connection::establish_connection;

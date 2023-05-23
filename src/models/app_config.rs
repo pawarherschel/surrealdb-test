@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 use std::error::Error;
-use std::path::PathBuf;
 
 use config::Config;
 
