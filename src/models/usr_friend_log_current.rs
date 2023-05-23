@@ -30,7 +30,6 @@ pub struct UsrFriendLogCurrent {
 }
 
 impl UsrFriendLogCurrent {
-    /// Get all rows from the `usr_friend_log_current` table by using the default values
     #[allow(dead_code)]
     fn new() -> Self {
         Self::default()
