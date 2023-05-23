@@ -41,7 +41,7 @@
         Japan
     }
     
-    note left of WorldRegion
+    note bottom of WorldRegion
         World Region is a
         region where the
         world instance
@@ -61,7 +61,7 @@
         Leave
     }
     
-    note left of JoinLeaveEvent
+    note top of JoinLeaveEvent
         Join Leave Event is a
         type of event that
         happened when the
@@ -70,7 +70,7 @@
         instance.
     end note
     
-    note right of JoinLeaveEvent::Unknown
+    note left of JoinLeaveEvent::Unknown
         Unknown Join Leave Event is
         only used for debugging.
     end note
