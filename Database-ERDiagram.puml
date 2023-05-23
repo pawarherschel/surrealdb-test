@@ -1,7 +1,5 @@
-```plantuml
 @startuml Database ERDiagram
-    
-    
+
     enum "Trust Levels" as TrustLevel {
         Unknown
         --
@@ -161,5 +159,5 @@
     end note
     
     UserFriendLogCurrent::user_id --> Player
+
 @enduml
-```
