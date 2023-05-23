@@ -1,3 +1,15 @@
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
 DEFINE TABLE gamelog_locations SCHEMALESS;
 
 DEFINE FIELD created_at ON gamelog_locations;

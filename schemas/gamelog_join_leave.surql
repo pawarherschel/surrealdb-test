@@ -1,3 +1,17 @@
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
+-- noinspection AnnotatorForFile
+
 DEFINE TABLE gamelog_join_leave SCHEMALESS;
 
 DEFINE FIELD created_at ON gamelog_join_leave;
