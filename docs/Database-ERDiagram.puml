@@ -1,4 +1,6 @@
 @startuml Database ERDiagram
+    !theme reddress-darkblue
+
 
     enum "Trust Levels" as TrustLevel {
         Unknown
