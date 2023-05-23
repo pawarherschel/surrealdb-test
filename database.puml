@@ -1,0 +1,162 @@
+@startuml Database ERDiagram
+
+
+enum "Trust Levels" as TrustLevel {
+    Unknown
+    --
+    Visitor
+    NewUser
+    User
+    KnownUser
+    TrustedUser
+    VRChatTeam
+    Nuisance
+}
+
+note left of TrustLevel
+    Trust Level is a
+    measure of how
+    much the user is
+    trusted by the
+    system.
+end note
+
+note right of TrustLevel::Unknown
+    Unknown Trust Level is
+    only used for debugging.
+end note
+
+note right of TrustLevel::Visitor
+    The default trust level
+    given to a user.
+end note
+
+
+enum "World Regions" as WorldRegion {
+    Unknown
+    --
+    USWest
+    US
+    USEast
+    Europe
+    Japan
+}
+
+note left of WorldRegion
+    World Region is a
+    region where the
+    world instance
+    is hosted.
+end note
+
+note right of WorldRegion::Unknown
+    Unknown World Region is
+    only used for debugging.
+end note
+
+
+enum "Join Leave Events" as JoinLeaveEvent {
+    Unknown
+    --
+    Join
+    Leave
+}
+
+note left of JoinLeaveEvent
+    Join Leave Event is a
+    type of event that
+    happened when the
+    Player joined or
+    left the world
+    instance.
+end note
+
+note right of JoinLeaveEvent::Unknown
+    Unknown Join Leave Event is
+    only used for debugging.
+end note
+
+
+entity "Players" as Player {
+    * player_id: String
+    --
+    display_name: String
+    trust_level: TrustLevel
+}
+
+Player::trust_level --> TrustLevel
+
+
+entity "World Instances" as WorldInstance {
+    * world_id: String
+    * instance_id: String
+    --
+    nonce: String
+    hidden: Player
+    private: Player
+    can_request_invite: Boolean
+    region: WorldRegion
+    friends: Player
+    group: String
+}
+
+WorldInstance::region --> WorldRegion
+WorldInstance::hidden --> Player
+WorldInstance::private --> Player
+WorldInstance::friends --> Player
+
+
+entity "Game Join Leave Logs" as GamelogJoinLeave {
+    * id: Integer
+    --
+    * created_at: DateTime
+    instance_owner: Player
+    instance_owner_name: String
+    location: WorldInstance
+    * event: JoinLeaveEvent
+    time: Integer
+}
+
+note right of GamelogJoinLeave::time
+    Amount of time the
+    Player spent in the
+    World Instance.
+end note
+
+GamelogJoinLeave::instance_owner --> Player
+GamelogJoinLeave::location --> WorldInstance
+GamelogJoinLeave::event --> JoinLeaveEvent
+
+
+entity "Game Location Logs" as GamelogLocation {
+    * id
+    --
+    * created_at: DateTime
+    * world_name: String
+    * world_instance: WorldInstance
+    time: Integer
+    group_name: String
+}
+
+note right of GamelogLocation::time
+    Amount of time the
+    Player spent in the
+    World Instance.
+end note
+
+GamelogLocation::world_instance --> WorldInstance
+
+
+entity "User Current Friend Logs" as UserFriendLogCurrent {
+    * user_id: Player
+}
+
+note right of UserFriendLogCurrent::user_id
+    User ID of the Player
+    who is currently
+    friends with the
+    User.
+end note
+
+UserFriendLogCurrent::user_id --> Player
+@enduml
